@@ -45,10 +45,10 @@ integrandB = y*np.sin(2*x_radians)
 integrandC = y*np.cos(4*x_radians)
 integrandD = y*np.sin(4*x_radians)
 
-A = 2 * (1/np.pi) * integrate.simps(integrandA, x_radians)
-B = 2 * (2/np.pi) * integrate.simps(integrandB, x_radians)
-C = 2 * (2/np.pi) * integrate.simps(integrandC, x_radians)
-D = 2 * (2/np.pi) * integrate.simps(integrandD, x_radians)
+A = (1/np.pi) * integrate.simps(integrandA, x_radians)
+B = (2/np.pi) * integrate.simps(integrandB, x_radians)
+C = (2/np.pi) * integrate.simps(integrandC, x_radians)
+D = (2/np.pi) * integrate.simps(integrandD, x_radians)
 
 # print A
 # print B

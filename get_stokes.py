@@ -12,10 +12,10 @@ def get_stokes(theta, I):
 
     denom = float(2*len(I))/360
 
-    area0 = 2 * np.trapz(signal0)/denom
-    area1 = 2 * np.trapz(signal1)/denom
-    area2 = 2 * np.trapz(signal2)/denom
-    area3 = 2 * np.trapz(signal3)/denom
+    area0 = np.trapz(signal0)/denom
+    area1 = np.trapz(signal1)/denom
+    area2 = np.trapz(signal2)/denom
+    area3 = np.trapz(signal3)/denom
 
     A = area0/np.pi
     B = -area1*2/np.pi
