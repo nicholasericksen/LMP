@@ -19,7 +19,6 @@ filename = "LMP-data-" + timestr
 
 ser = serial.Serial(port, baudrate)
 
-
 while (count < num_of_measurements):
 
     print "Measurement Angle: ",
@@ -32,11 +31,6 @@ while (count < num_of_measurements):
     measurement = ser.readline()
     print "Measurement: ", measurement
 
-    # ts = time.time()
-    # date = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
-    # filename = "LMP", date
-
-
     if(os.path.isfile(filename)):
         target = open(filename, 'ab')
     else:
@@ -45,7 +39,6 @@ while (count < num_of_measurements):
     target.write(angle)
     target.write('\t')
     target.write(measurement)
-    # target.write('\n')
 
     target.close()
     count = count + 1
