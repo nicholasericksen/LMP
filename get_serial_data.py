@@ -9,7 +9,9 @@ print "Light Measuring Polarimeter (LMP)"
 print "A simple program to record values from a photosensor transmitting serial data"
 print "============================================================================="
 # print "How many measurements? ",
-num_of_measurements = 3
+num_of_measurements = 37
+
+
 
 port = "COM4"
 baudrate = 9600

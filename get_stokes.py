@@ -46,28 +46,48 @@ def get_stokes_trapz(theta, I):
     return s0, s1, s2, s3
 
 def get_stokes_simps(theta, I):
+    theta = np.array(theta)
+    I = np.array(I)
+
     integrandA = I
     integrandB = I*np.sin(2*theta)
     integrandC = I*np.cos(4*theta)
     integrandD = I*np.sin(4*theta)
 
+    # print integrandA
+    # print integrandB
+    # print integrandC
+    # print integrandD
+
     A = (1/np.pi) * integrate.simps(integrandA, theta)
-    B = (2/np.pi) * integrate.simps(integrandB, theta)
+    B = -(2/np.pi) * integrate.simps(integrandB, theta)
     C = (2/np.pi) * integrate.simps(integrandC, theta)
     D = (2/np.pi) * integrate.simps(integrandD, theta)
 
+    print "============================="
+    print "A: " , A
+    print "B: ", B
+    print "C: ", C
+    print "D: ", D
+    # print "theta: ", theta
+
+    stokes0 = A - C
     stokes1 = 2 * C
     stokes2 = 2 * D
-    stokes3 = -B
-    stokes0 = A - C
+    stokes3 = B
     # S0 = np.sqrt(S1**2 + S2**2 + S3**2)
 
     stokes0p = np.sqrt(stokes1**2 + stokes2**2 + stokes3**2)
 
-    S0 = stokes0/stokes0p
-    S1 = stokes1/stokes0p
-    S2 = stokes2/stokes0p
-    S3 = stokes3/stokes0p
+    # S0 = stokes0/stokes0p
+    # S1 = stokes1/stokes0p
+    # S2 = stokes2/stokes0p
+    # S3 = stokes3/stokes0p
+
+    S0 = stokes0
+    S1 = stokes1
+    S2 = stokes2
+    S3 = stokes3
 
 
     DOP = np.sqrt(stokes1**2 + stokes2**2 + stokes3**2) / stokes0
