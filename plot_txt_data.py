@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy.fft as fft
 from get_stokes import get_stokes_trapz, get_stokes_simps
 from scipy import integrate
+from scipy.optimize import leastsq
 #here will be the loop to take data readings on each keystroke
 #readings will be then saved in a .txt file for processing
 
@@ -14,9 +15,24 @@ x = data[:,0]
 y = data[:,1]
 
 x_radians = x * np.pi / 180
-# print x_radians
+
+print x_radians
 # y_actual = 2 * np.sin( 4 * (x_radians - 0.4799655 )) + 3
 
+guess_offset = 1.5
+guess_amplt = .5
+guess_freq = 4
+
+y_guess1 = guess_offset + (guess_amplt * np.cos(guess_freq*(x_radians)))
+optimized_funct = lambda x: x[0] + (x[1]*np.cos(x[2]*(x_radians))) - y
+est_offset, est_amplt, est_freq = leastsq(optimized_funct, [guess_offset, guess_amplt, guess_freq] )[0]
+
+print "est_offset", est_offset
+print "est_amplt", est_amplt
+print "est_freq", est_freq
+
+fitted_curve = est_offset + (est_amplt * np.cos(est_freq*(x_radians)))
+#y_actual2 = 1.4963 + (.5039 * np.cos(4.0032*(x_radians)))
 # def integrandA(theta, amp, freq, phi, offset):
 #     return (1/np.pi)*(amp * np.cos(freq*theta - phi) + offset)
 #
@@ -62,7 +78,7 @@ x_radians = x * np.pi / 180
 # print y_actual
 # s0, s1, s2, s3 = get_stokes_trapz(x_radians, y)
 
-S0, S1, S2, S3 = get_stokes_simps(x_radians, y)
+S0, S1, S2, S3 = get_stokes_simps(x_radians, fitted_curve)
 
 def curve_fit_into(y):
     # first guess at curve before fitting
@@ -92,7 +108,9 @@ def curve_fit_into(y):
 
 def draw_data(x, y):
     plt.plot(x, y, 'ro')
-    # plt.plot(x, y_actual, 'bo')
+    plt.plot(x, y_guess1, 'bo')
+    plt.plot(x, fitted_curve)
+
 
     plt.title('Light Measuring Polarimetry')
     plt.xlabel('Measurement Angles')
@@ -100,8 +118,8 @@ def draw_data(x, y):
 
     plt.show()
 
-draw_data(x, y)
-
+draw_data(x_radians, y)
+# draw_data(x_radians, y_actual)
 
 
 
