@@ -130,3 +130,18 @@ def get_stokes_simps(theta, I):
     print "S3 (Simpsons): " , S3
 
     return S0, S1, S2, S3
+
+def get_stokes_chip(pH, pV, p45, p135, pR, pL):
+    S0 = pH + pV
+    S1 = pH - pL
+    S2 = p45 - p135
+    S3 = pR - pL
+
+    print "S0 (chip): " , S0
+    print "S1 (chip): " , S1
+    print "S2 (chip): " , S2
+    print "S3 (chip): " , S3
+
+    return S0, S1, S2, S3
+
+

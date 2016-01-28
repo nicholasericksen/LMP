@@ -20,18 +20,38 @@ print x_radians
 # y_actual = 2 * np.sin( 4 * (x_radians - 0.4799655 )) + 3
 
 guess_offset = 1.5
-guess_amplt = .5
+guess_amplt = 0.5
 guess_freq = 4
+guess_shift = 0
 
-y_guess1 = guess_offset + (guess_amplt * np.cos(guess_freq*(x_radians)))
-optimized_funct = lambda x: x[0] + (x[1]*np.cos(x[2]*(x_radians))) - y
-est_offset, est_amplt, est_freq = leastsq(optimized_funct, [guess_offset, guess_amplt, guess_freq] )[0]
+
+g_offset1 = .8
+g_offset2 = -1
+g_offset3 = .25
+
+
+# y_guess1 = g_offset1 + (g_offset2 * np.sin(2*(x_radians))) + g_offset3 * np.cos(x_radians)
+# optim_fnct = lambda x: x[0] + (x[1] * np.sin(2*(x_radians))) + x[2] * np.cos(x_radians) - y
+# e_offset1, e_offset2, e_offset3 = leastsq(optim_fnct, [g_offset1, g_offset2, g_offset3])[0]
+y_guess1 = guess_offset + (guess_amplt * np.cos(guess_freq*(x_radians) + guess_shift))
+# y_guess1 = guess_offset + (guess_amplt * np.cos(guess_freq*(x_radians + guess_shift)) this is the actual ideal form to view the shipt
+
+optimized_funct = lambda x: x[0] + (x[1]*np.cos(x[2]*(x_radians) + x[3])) - y
+est_offset, est_amplt, est_freq, est_shift = leastsq(optimized_funct, [guess_offset, guess_amplt, guess_freq, guess_shift] )[0]
 
 print "est_offset", est_offset
 print "est_amplt", est_amplt
 print "est_freq", est_freq
+print "est_shift", est_shift
 
-fitted_curve = est_offset + (est_amplt * np.cos(est_freq*(x_radians)))
+# print "offset1", e_offset1
+# print "offset2", e_offset2
+# print "offset3", e_offset3
+
+
+fitted_curve = est_offset + (est_amplt * np.cos(est_freq*(x_radians) + est_shift))
+# fitted_curve2 = e_offset1 + (e_offset2 * np.sin(2*(x_radians))) + e_offset3 * np.cos(x_radians)
+
 #y_actual2 = 1.4963 + (.5039 * np.cos(4.0032*(x_radians)))
 # def integrandA(theta, amp, freq, phi, offset):
 #     return (1/np.pi)*(amp * np.cos(freq*theta - phi) + offset)
@@ -80,18 +100,28 @@ fitted_curve = est_offset + (est_amplt * np.cos(est_freq*(x_radians)))
 
 S0, S1, S2, S3 = get_stokes_simps(x_radians, fitted_curve)
 
+
 def curve_fit_into(y):
     # first guess at curve before fitting
     offset = np.mean(y)
     print "offset: ", offset
-    amplitude = 3*np.std(y)/(2**0.5)
+
+    maximum = max(y)
+    minimum = min(y)
+
+    amplitude = (maximum - minimum) / 2
     print "amplitude: ", amplitude
 
-    # spectrum = fft.fft(data)
-    # freq = fft.fftfreq(len(spectrum))
+    spectrum = fft.fft(data)
+
+    freq = fft.psd(len(spectrum))
+
+
+    peaks = max(freq)
     # print "freq: ", freq
     # plt.plot(freq, abs(spectrum))
     # plt.show()
+    print "peaks", peaks
 
 
     # phase = 0
@@ -104,18 +134,17 @@ def curve_fit_into(y):
     #
     # x_new = np.linspace(x[0], x[-1], 50)
     # y_new = f(x_new)
-# curve_fit_into(y)
+# curve_fit_into(fitted_curve)
 
 def draw_data(x, y):
-    plt.plot(x, y, 'ro')
-    plt.plot(x, y_guess1, 'bo')
-    plt.plot(x, fitted_curve)
+    plt.plot(x, y, 'rs', label='Actual Data')
+    plt.plot(x, y_guess1, 'bo',label='Ideal Curve')
+    plt.plot(x, fitted_curve, 'gv', label='Fitted')
 
-
-    plt.title('Light Measuring Polarimetry')
-    plt.xlabel('Measurement Angles')
-    plt.ylabel('Intensity')
-
+    plt.title('V-H Measurements', fontsize=18)
+    plt.xlabel('Measurement Angles [radians]', fontsize=14)
+    plt.ylabel('Intensity [volts]', fontsize=14)
+    plt.legend(loc='upper right')
     plt.show()
 
 draw_data(x_radians, y)
