@@ -41,5 +41,14 @@ void loop() {
             motor.step(1225);
             mode = 0;
         }
+        if(mode == '3') {
+            int sensorValue = analogRead(vOut);
+            float scaleFactor = 5.0 / 1023.0;
+            float voltage = sensorValue * scaleFactor;
+            Serial.println(voltage);
+
+            delay(1000);
+            mode = 0;
+        }
     }
 }
