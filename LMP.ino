@@ -12,6 +12,7 @@ Stepper motor(512, in1Pin, in2Pin, in3Pin, in4Pin);
 void setup() {
     pinMode(in1Pin, OUTPUT);
     pinMode(in2Pin, OUTPUT);
+
     pinMode(in3Pin, OUTPUT);
     pinMode(in4Pin, OUTPUT);
 
