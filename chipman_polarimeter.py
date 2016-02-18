@@ -14,7 +14,7 @@ print "=========================================================================
 num_of_measurements = 7
 i = 0
 
-port = "COM4"
+port = "/dev/cu.usbmodem1421"
 baudrate = 9600
 angle = [0, 90, 45, -45, "LCP", "RCP"]
 ser = serial.Serial(port, baudrate)
