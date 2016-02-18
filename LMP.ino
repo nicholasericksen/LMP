@@ -26,7 +26,7 @@ void loop() {
         int rcv = Serial.read();
         int mode = rcv;
         if(mode == '1') {
-            motor.step(-175);
+            motor.step(268);
 
             delay(3000);
 
@@ -39,7 +39,7 @@ void loop() {
             mode = 0;
         }
         if(mode == '2') {
-            motor.step(1225);
+            motor.step(-1876);
             mode = 0;
         }
         if(mode == '3') {
