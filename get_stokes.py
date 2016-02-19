@@ -131,17 +131,49 @@ def get_stokes_simps(theta, I):
 
     return S0, S1, S2, S3
 
+
+filename = 'results/EX-02.04.16/LMP-data-20160204-183739-Horizontal.txt'
+
+def read_file(filename):
+    infile = open(filename)
+    data_set = infile.read().splitlines()
+    infile.close()
+
+    return data_set
+
+data = read_file(filename)
+data = [float(i) for i in data]
+print data
+
+pH = data[1]
+pV = data[2]
+p45 = data[3]
+p135 = data[4]
+pR = data[5]
+pL = data[6]
+
 def get_stokes_chip(pH, pV, p45, p135, pR, pL):
     S0 = pH + pV
     S1 = pH - pL
     S2 = p45 - p135
     S3 = pR - pL
 
-    print "S0 (chip): " , S0
-    print "S1 (chip): " , S1
-    print "S2 (chip): " , S2
-    print "S3 (chip): " , S3
+    DOP = np.sqrt(S1**2 + S2**2 + S3**2) / S0
 
-    return S0, S1, S2, S3
+    print "DOP", DOP
 
+    S0p = DOP * S0
 
+    S0n = S0p /S0p
+    S1n = S1 / S0p
+    S2n = S2 / S0p
+    S3n = S3 / S0p
+
+    print "S0 (chip): " , S0n
+    print "S1 (chip): " , S1n
+    print "S2 (chip): " , S2n
+    print "S3 (chip): " , S3n
+
+    # return S0p, S1n, S2n, S3n
+
+get_stokes_chip(pH, pV, p45, p135, pR, pL)
