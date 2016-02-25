@@ -132,7 +132,7 @@ def get_stokes_simps(theta, I):
     return S0, S1, S2, S3
 
 
-filename = 'results/EX-02.04.16/LMP-data-20160204-183739-Horizontal.txt'
+# filename = 'results/EX-02.04.16/LMP-data-20160204-183739-Horizontal.txt'
 
 def read_file(filename):
     infile = open(filename)
@@ -141,18 +141,20 @@ def read_file(filename):
 
     return data_set
 
-data = read_file(filename)
-data = [float(i) for i in data]
-print data
 
-pH = data[1]
-pV = data[2]
-p45 = data[3]
-p135 = data[4]
-pR = data[5]
-pL = data[6]
 
-def get_stokes_chip(pH, pV, p45, p135, pR, pL):
+def get_stokes_chip(filename):
+
+    data = read_file(filename)
+    data = [float(i) for i in data]
+
+    pH = data[1]
+    pV = data[2]
+    p45 = data[3]
+    p135 = data[4]
+    pR = data[5]
+    pL = data[6]
+
     S0 = pH + pV
     S1 = pH - pL
     S2 = p45 - p135
@@ -176,4 +178,4 @@ def get_stokes_chip(pH, pV, p45, p135, pR, pL):
 
     # return S0p, S1n, S2n, S3n
 
-get_stokes_chip(pH, pV, p45, p135, pR, pL)
+# get_stokes_chip(pH, pV, p45, p135, pR, pL)

@@ -53,6 +53,7 @@ while (i < 1):
     ser.write('2')
     i = i + 1
 
+
 # with open(filename) as f:
 #     x = f.readlines
 # # data = np.loadtxt(filename)
