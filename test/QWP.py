@@ -11,7 +11,7 @@ print "Light Measuring Polarimeter (LMP)"
 print "A simple program to record values from a photosensor transmitting serial data"
 print "============================================================================="
 # print "How many measurements? ",
-num_of_measurements = 1
+num_of_measurements = 18
 
 port = "/dev/cu.usbmodem1421"
 baudrate = 9600
