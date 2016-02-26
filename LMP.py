@@ -4,19 +4,17 @@ import time
 import datetime
 import os.path
 import numpy as np
-from get_stokes import get_stokes_chip
 
 class LMP():
+    def __init__(self, port="/dev/cu.usbmodem1421", baudrate=9600):
+        self.ser = serial.Serial(port, baudrate)
+        
     def sensor(self):
-        port = "/dev/cu.usbmodem1421"
-        baudrate = 9600
-        ser = serial.Serial(port, baudrate)
+        self.ser.flush()
+        self.ser.write('3')
 
-        ser.flush()
-        ser.write('3')
         time.sleep(1)
-
-        measurement = ser.readline()
+        measurement = self.ser.readline()
         print "Voltage: ", measurement
 
     def read_file(self, filename):
@@ -84,10 +82,7 @@ class LMP():
         num_of_measurements = 7
         i = 0
 
-        port = "/dev/cu.usbmodem1421"
-        baudrate = 9600
         angle = [0, 90, 45, -45, "LCP", "RCP"]
-        ser = serial.Serial(port, baudrate)
 
         while (i < 1):
             count = 0
@@ -97,11 +92,11 @@ class LMP():
             while (count < num_of_measurements):
                 time.sleep(2)
 
-                ser.flush()
-                ser.write('1')
+                self.ser.flush()
+                self.ser.write('1')
                 time.sleep(1)
 
-                measurement = ser.readline()
+                measurement = self.ser.readline()
 
                 print "Measurement: ", measurement
 
@@ -115,8 +110,8 @@ class LMP():
                 target.close()
                 count = count + 1
 
-            ser.flush()
-            ser.write('2')
+            self.ser.flush()
+            self.ser.write('2')
             i = i + 1
 
-            get_stokes_chip(filename)
+        self.stokesclassical(filename)
